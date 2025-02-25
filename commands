@@ -3,14 +3,43 @@ Github steps:
 Start of day:
 git status
 git pull
+git branch
+git branch -r
+git branch -a
+git fetch -all
+git pull -all
 
 During Day:
 git add .
 git commit -m "comments"
 git push
 
+Webserver steps:
+#!/bin/bash
+
+# Setup New Hostname
+sudo hostnamectl set-hostname "web.cloudbinary.com"
+
+# Update Hostname in /etc/hosts file
+echo "`hostname -I | awk '{ print $1 }'` `hostname`" >> /etc/hosts
+
+# Refresh the terminal
+/bin/bash
+
+# To Restart SSM Agent on Ubuntu 
+sudo systemctl restart snap.amazon-ssm-agent.amazon-ssm-agent.service
+
+# Download, Install and Configure WebServer 
+sudo apt-get update
+sudo apt-get install apache2 -y 
+
+# Attach Instance profile To EC2 Instance 
+# aws ec2 associate-iam-instance-profile --iam-instance-profile Name=CB-SSM-EC2 --instance-id "i-011db5196a0f94d05"
+
 Linux Commands:
-Webserver
+
+Webserver:
+
 sudo su
 sudo apt-get update
 sudo apt-get apache2 -y
@@ -25,3 +54,4 @@ cd /var/www/html
 rm -f index.html
 git clone https://github.com/keshavkummari/keshavkummari.git
 cp -pvr keshavkummari/* .
+
