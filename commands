@@ -1,0 +1,27 @@
+Github steps:
+
+Start of day:
+git status
+git pull
+
+During Day:
+git add .
+git commit -m "comments"
+git push
+
+Linux Commands:
+Webserver
+sudo su
+sudo apt-get update
+sudo apt-get apache2 -y
+pwd
+hostname
+cat /etc/hosts
+hostname -I
+ps -aux| grep apache2
+systemctl status apache2
+ls -lrt /var/www/html/index.html\
+cd /var/www/html
+rm -f index.html
+git clone https://github.com/keshavkummari/keshavkummari.git
+cp -pvr keshavkummari/* .
