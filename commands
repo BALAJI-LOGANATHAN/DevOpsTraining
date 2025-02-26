@@ -36,6 +36,47 @@ sudo apt-get install apache2 -y
 # Attach Instance profile To EC2 Instance 
 # aws ec2 associate-iam-instance-profile --iam-instance-profile Name=CB-SSM-EC2 --instance-id "i-011db5196a0f94d05"
 
+Database shell script:
+#!/bin/bash
+
+# Setup New Hostname
+sudo hostnamectl set-hostname "mysql.cloudbinary.io"
+
+# Update Hostname in /etc/hosts file
+echo "`hostname -I | awk '{ print $1 }'` `hostname`" >> /etc/hosts
+
+# Refresh the terminal
+/bin/bash
+
+# To Restart SSM Agent on Ubuntu 
+sudo systemctl restart snap.amazon-ssm-agent.amazon-ssm-agent.service
+
+# Download, Install and Configure MySQL Database
+sudo apt-get update
+sudo apt-get install mysql-server -y 
+
+# Verification:
+# systemctl status mysql
+# systemctl restart mysql 
+# systemctl status mysql 
+
+# ps -aux | grep mysql 
+
+# For the first time, we should configure DB
+# sudo mysql_secure_installation
+
+# mysql> create user 'spider'@'%' IDENTIFIED BY 'Azure@123456'; (user can access db from anywhere)
+# Query OK, 0 rows affected (0.01 sec)
+
+# mysql> GRANT ALL ON *.* TO 'spider'@'%';( user can access any schema)
+# Query OK, 0 rows affected (0.01 sec)
+
+# mysql> FLUSH PRIVILEGES; (Save changes)
+# Query OK, 0 rows affected (0.00 sec)
+
+# Attach Instance profile To EC2 Instance 
+# aws ec2 associate-iam-instance-profile --iam-instance-profile Name=SA-EC2-SSM --instance-id "i-0b634ed4a13262892"
+
 Linux Commands:
 
 Webserver:
@@ -55,3 +96,24 @@ rm -f index.html
 git clone https://github.com/keshavkummari/keshavkummari.git
 cp -pvr keshavkummari/* .
 
+Database:
+sudo su
+Process check: ps -aux| grep mysql ( Process status -all users execution) Similar to task manager
+Deamon check: systemctl status mysql
+Port check: netstat -ltpn( t-tcp, p- port, n- number( Check if port is listening or not)
+top
+mysql(start mysql)
+show databases;
+use mysql;
+show tables;
+touch mysql-output.txt
+ls -lrt /etc/mysql/mysql.conf.d/mysqld.cnf
+vi /etc/mysql/mysql.conf.d/mysqld.cnf
+remove line 31 i: 0.0.0.0
+systemctl restart mysql
+
+Process check: ps -aux| grep mysql ( Process status -all users execution) Similar to task manager
+Deamon check: systemctl status mysql
+Port check: netstat -ltpn( t-tcp, p- port, n- number( Check if port is listening or not)
+
+Connect using mysql from local
