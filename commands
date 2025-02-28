@@ -200,3 +200,68 @@ cd /opt/tomcat/bin/
 # webapps/manager/META-INF/context.xml:20:         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|.*" />
 
 # allow="*"
+
+########################################
+Application servers :
+    - Apache Tomcat 
+        - UI :
+            - 3 Pages : 
+                1. Server Status :
+                    You are not authorized to view this page.
+                    By default the Manager is only accessible from a browser running on the same machine as Tomcat. 
+                    If you wish to modify this restriction, you'll need to edit the Manager's context.xml file.
+
+                To Fix :
+                └── manager
+                    ├── META-INF
+                        │   └── context.xml
+
+                2. Manager App :
+                    You are not authorized to view this page.
+                    By default the Manager is only accessible from a browser running on the same machine as Tomcat. 
+                    If you wish to modify this restriction, you'll need to edit the Manager's context.xml file.
+
+                To Fix :
+                └── manager
+                    ├── META-INF
+                        │   └── context.xml
+# cp -pvr /opt/tomcat/webapps/manager/META-INF/context.xml "/opt/tomcat/webapps/manager/META-INF/context.xml_$(date +%F_%R)"
+# vi /opt/tomcat/webapps/manager/META-INF/context.xml
+
+# grep -H -n "|.*" webapps/manager/META-INF/context.xml
+# webapps/manager/META-INF/context.xml:20:         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|.*" />
+
+
+                3. Host Manager :
+                    You are not authorized to view this page.
+                    By default the Host Manager is only accessible from a browser running on the same machine as Tomcat. 
+                    If you wish to modify this restriction, you'll need to edit the Host Manager's context.xml file.
+
+                To Fix :
+                    ├── host-manager
+                    │   ├── META-INF
+                    │   │   └── context.xml
+
+
+# cp -pvr /opt/tomcat/webapps/host-manager/META-INF/context.xml "/opt/tomcat/webapps/manager/META-INF/context.xml_$(date +%F_%R)"
+
+# vi /opt/tomcat/webapps/host-manager/META-INF/context.xml
+
+# grep -H -n "|.*" webapps/host-manager/META-INF/context.xml
+# webapps/host-manager/META-INF/context.xml:20:         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|.*" />
+
+
+
+                - Enable Those 3 Pages from Globally
+            - User  : admin 
+            - Password : redhat@123
+            - Roles :
+                - Admin : 2  : Roles for Host Manager
+                    admin-gui - allows access to the HTML GUI
+                    admin-script - allows access to the text interface
+                
+                - Manager : 4 : Roles for Server Status & Manager App 
+                    manager-gui - allows access to the HTML GUI and the status pages
+                    manager-script - allows access to the text interface and the status pages
+                    manager-jmx - allows access to the JMX proxy and the status pages
+                    manager-status - allows access to the status pages only
