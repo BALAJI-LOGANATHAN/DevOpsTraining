@@ -340,3 +340,54 @@ sudo systemctl restart snap.amazon-ssm-agent.amazon-ssm-agent.service
 
 
 
+https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+
+https://www.jenkins.io/doc/pipeline/tour/hello-world/#:~:text=Jenkins%20Pipeline%20(or%20simply%20%22Pipeline,to%20your%20users%20and%20customers.
+
+https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
+
+
+# There are two types of pipelines in Jenkins:
+
+1. Declarative
+2. Scripted
+
+File Name : Jenkinsfile
+
+
+# 1. Declarative : pipelines break down stages into individual stages that can contain multiple steps.
+
+Jenkinsfile (Declarative Pipeline)
+pipeline {
+    agent { docker { image 'maven:3.8.4-openjdk-11-slim' } }
+    stages {
+        stage('build') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+    }
+}
+
+# 2. Scripted : pipelines use groovy code and refrences to the Jenkins pipeline DSL within the stage elements without the need for steps.
+
+node {
+    stage('Hello world') {
+        sh 'echo Hello World'
+    }
+}
+
+node {
+    stage('Test') {
+        git 'https://github.com/user/project.git'
+        sh 'mvn test'
+        archiveArtifacts artifacts: 'target/surefire-reports/**'
+    }
+    stage('Build') {
+        sh 'mvn clean package -DskipTests' 
+        archiveArtifacts artifacts: 'target/*.jar'
+    }
+    stage('Deploy') {
+        sh 'echo Deploy'
+    }
+}
